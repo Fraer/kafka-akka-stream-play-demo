@@ -1,9 +1,8 @@
-@(webJarAssets: WebJarAssets)
+@import org.webjars.play.WebJarsUtil
+@(title: String)(implicit assets: AssetsFinder, request: RequestHeader, webJarsUtil: WebJarsUtil)
 
-@main(webJarAssets) {
-
-
-    <div>&nbsp;</div>
+@main(title) {
+    <div></div>
     <form role="form" id="form">
         <div class="row">
         <div class="well col-xs-4 col-xs-offset-1">

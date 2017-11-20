@@ -1,6 +1,6 @@
-## Play Framework 2.5, Reactive Kafka & EventSource demo
+## Play Framework 2.6, Reactive Kafka & EventSource demo
 
-This demo is a single page web site which takes a form input, sends it as a json XHR request to a simple [Scala Controller](https://github.com/mikebridge/kafka-akka-stream-play-demo/blob/master/app/controllers/HomeController.scala) in [Play Framework 2.5](https://www.playframework.com/), which then pipes it to a [Kafka](http://kafka.apache.org/) Unified Log.  A listener then receives a notification from Kafka via an event stream via [Reactive Kafka](https://github.com/akka/reactive-kafka) and sends it immediately back to the browser as an HTML5 EventSource event.
+This demo is a single page web site which takes a form input, sends it as a json XHR request to a simple [Scala Controller](https://github.com/mikebridge/kafka-akka-stream-play-demo/blob/master/app/controllers/HomeController.scala) in [Play Framework 2.6](https://www.playframework.com/), which then pipes it to a [Kafka](http://kafka.apache.org/) Unified Log.  A listener then receives a notification from Kafka via an event stream via [Reactive Kafka](https://github.com/akka/reactive-kafka) and sends it immediately back to the browser as an HTML5 EventSource event.
 
 It's also possible also send text messages to the browser and listen to the event stream from the command line using the default command line producer/consumer that comes with Kafka.
 

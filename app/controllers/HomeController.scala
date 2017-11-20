@@ -8,10 +8,11 @@ import play.api.libs.json._
 import play.api.mvc._
 import akka.NotUsed
 import akka.actor.ActorSystem
-import akka.kafka.ProducerSettings
+import akka.kafka.{ProducerSettings, Subscriptions}
 import akka.stream.scaladsl.{Source, _}
 import org.apache.kafka.clients.producer.{KafkaProducer, ProducerRecord}
 import org.apache.kafka.common.serialization.{ByteArraySerializer, StringSerializer}
+import org.webjars.play.{WebJarAssets, WebJarsUtil}
 import play.api.libs.EventSource.Event
 
 import scala.concurrent.ExecutionContext
@@ -31,18 +32,18 @@ import org.apache.kafka.clients.consumer.{ConsumerConfig, ConsumerRecord}
 //import org.apache.kafka.common.TopicPartition
 
 @Singleton
-class HomeController @Inject()(webJarAssets: WebJarAssets)(implicit ec: ExecutionContext) extends Controller {
+class HomeController @Inject()(/* */)(implicit ec: ExecutionContext, assets: AssetsFinder, webJarsUtil: WebJarsUtil) extends InjectedController {
 
   implicit val actorSystem = ActorSystem("KafkaStreamDemo")
   implicit val materializer = ActorMaterializer()
 
 
-  def index = Action {
+  def index = Action { implicit req =>
     Ok("Test")
   }
 
-  def test = Action {
-    Ok(views.html.index(webJarAssets))
+  def test = Action { implicit req =>
+    Ok(views.html.index("Kafka Stream Demo"))
   }
 
   // see: http://loicdescotte.github.io/posts/play25-akka-streams/
@@ -79,7 +80,7 @@ class HomeController @Inject()(webJarAssets: WebJarAssets)(implicit ec: Executio
   }
 
   def openKafkaStream(consumerSettings: ConsumerSettings[Array[Byte], String]) =
-    Consumer.plainSource(consumerSettings)
+    Consumer.plainSource(consumerSettings, Subscriptions.topics("topic1"))
       .map(x => x.value)
 
   def kafkaProducerSettings: ProducerSettings[Array[Byte], String] =
@@ -87,8 +88,7 @@ class HomeController @Inject()(webJarAssets: WebJarAssets)(implicit ec: Executio
       .withBootstrapServers("localhost:9092")
 
   def kafkaConsumerSettings: ConsumerSettings[Array[Byte], String] =
-    ConsumerSettings(actorSystem, new ByteArrayDeserializer, new StringDeserializer,
-      Set("topic1"))
+    ConsumerSettings(actorSystem, new ByteArrayDeserializer, new StringDeserializer)
       .withBootstrapServers("localhost:9092")
       .withGroupId("group1")
       .withProperty(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest")
