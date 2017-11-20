@@ -5,13 +5,13 @@
 <html lang="en">
     <head>
         <title></title>
+        @Html(webJarsUtil.css("bootstrap.min.css"))
+        @Html(webJarsUtil.script("jquery.min.js"))
+        @Html(webJarsUtil.script("bootstrap.min.js"))
+        @Html(webJarsUtil.requireJs(routes.Assets.versioned("javascripts/hello.js")))
+
         <link rel="stylesheet" media="screen" href="@assets.path("stylesheets/main.css")">
         <link rel="shortcut icon" type="image/png" href="@assets.path("images/favicon.png")">
-        <link rel="stylesheet" href="@webJarsUtil.url("bootstrap.min.css")">
-
-        <script src="@assets.path("javascripts/hello.js")" type="text/javascript"></script>
-        <script src="@webJarsUtil.url("jquery.min.js")"></script>
-        <script src="@webJarsUtil.url("bootstrap.min.js")"></script>
     </head>
     <body>
         @content
